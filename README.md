@@ -26,7 +26,7 @@ On the system where you will be building the AWS Lambda package, you will need t
 Clone this repository.
 
 ~~~sh
-git clone https://github.com/awslabs/aws-dx-monitor
+$ git clone https://github.com/awslabs/aws-dx-monitor
 ~~~
 
 
@@ -60,22 +60,30 @@ Deploy the AWS Lambda function.  The function must be deployed to every region w
   2. For **Description**, enter **Monitor Direct Connect status**
   3. For **Runtime**, select **Python 2.7**
   4. For **Code entry type**, select **Upload a .ZIP file**
-  5. For **Function package**, click the Upload button, and select the package you built in the previous section named `aws-dx-monitor.zip`.
+  5. For **Function package**, click the **Upload** button, and select the package you built in the previous section named `aws-dx-monitor.zip`.
   6. For **Hander**, ensure the value is `aws-dx-monitor.lambda_handler`.
   7. For **Role**, select **Create a custom role**.
-     1. For IAM Role, select Create a new IAM Role.
-     2. For Role Name, enter **aws-dx-monitor-role**
-     3. Expand View Policy Document and click the Edit link.  When the Edit Policy dialog appears, click OK.
+     1. For **IAM Role**, select Create a new IAM Role.
+     2. For **Role Name**, enter **aws-dx-monitor-role**
+     3. Expand **View Policy Document** and click the **Edit** link.  When the Edit Policy dialog appears, click **OK**.
      4. Enter the policy defined in the section [Lambda Execution Policy](#lambda-execution-policy).  **Review the policy prior to using**.
      5. Click **Allow**.     	
-  8. Click Next.
-  9. Click Create Function.
+  8. Click the **Next** button.
+9. Click **Create Function**.
 
 ### 5. Set Alarms
 
-Once the scheduled event begins sending data to Amazon CloudWatch, you can begin setting alarms.  The custom metric will be found in CloudWatch > Metrics under the name ***AWSx/DirectConnect***.
+Once the scheduled event begins sending data to Amazon CloudWatch, you can begin setting alarms.  The custom metric will be found in CloudWatch > Metrics under the name ***AWSx/DirectConnect***.  For more information, see [Creating Amazon CloudWatch Alarms](http://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/AlarmThatSendsEmail.html).
 
+You may wish to alarm on these levels:
 
+| Config Item                 | Level |
+|:----------------------------|:------|
+| Connection                  | >= 5  |
+| Interconnect                | >= 4  |
+| Connections on Interconnect | >= 5  |
+| Virtual Interface           | >= 5  |
+| Virtual Gateway             | >= 3  |
 
 # Status Levels
 

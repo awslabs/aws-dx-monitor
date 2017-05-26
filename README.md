@@ -36,7 +36,7 @@ Build the aws-dx-monitor package.  The script downloads the `Enum` backport for 
 
 ~~~sh
 $ cd aws-dx-monitor
-$ pip install enum34 -t enum
+$ pip install enum34 -t .
 $ python package.py
 ~~~
 

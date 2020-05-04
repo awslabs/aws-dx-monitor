@@ -30,9 +30,10 @@ cwclient = boto3.client('cloudwatch')
 
 # The 'live' handler - from scheduler
 def lambda_handler ( event, context ):
-    ver_vistate  ( dxclient.describe_virtual_interfaces() )
-    ver_cstate   ( dxclient.describe_connections() )
-    ver_vpgstate ( dxclient.describe_virtual_gateways() )
+    ver_vistate   ( dxclient.describe_virtual_interfaces() )
+    ver_cstate    ( dxclient.describe_connections() )
+    ver_vpgstate  ( dxclient.describe_virtual_gateways() )
+    ver_dxgwstate ( dxclient.describe_direct_connect_gateways() )
     # Only DX Service Providers can make this call without an
     # exception
     #
@@ -76,6 +77,16 @@ def ver_vpgstate( data ):
         put_vpgstate( vpg['virtualGatewayId'],
                       # Lookup int value in VGW enum
                       VirtualGatewayState[vpg['virtualGatewayState']].value )
+
+# direct connect gateway payload evaluation
+def ver_dxgwstate( data ):
+    if not 'directConnectGateways' in data:
+        logger.error("unexpected: directConnectGateways key not found in data")
+        return
+    for dxgw in data['directConnectGateways']:
+        put_vpgstate( dxgw['directConnectGatewayId'],
+                      # Lookup int value in DXGW enum
+                      DirectConnectGatewayState[dxgw['directConnectGatewayState']].value )
 
 # Writes VirtualInterfaceState dimension data to DX custom metric
 def put_vistate ( iid, state ):
@@ -153,6 +164,25 @@ def put_vpgstate ( iid, state ):
         ],
     )
 
+# Writes DXGW dimension data to DX custom metric
+def put_vpgstate ( iid, state ):
+    response = cwclient.put_metric_data(
+        Namespace='AWSx/DirectConnect',
+        MetricData=[
+            {
+                'MetricName': 'DirectConnectGatewayState',
+                'Dimensions': [
+                    {
+                        'Name': 'DirectConnectGatewayId',
+                        'Value': iid
+                    },
+                ],
+                'Value': state,
+                'Unit': 'None'
+            },
+        ],
+    )
+
 
 class VirtualInterfaceState(Enum):
     confirming = 1
@@ -183,6 +213,12 @@ class InterconnectState(Enum):
     deleted    = 6
 
 class VirtualGatewayState(Enum):
+    pending    = 1
+    available  = 2
+    deleting   = 3
+    deleted    = 4
+
+class DirectConnectGatewayState(Enum):
     pending    = 1
     available  = 2
     deleting   = 3

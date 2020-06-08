@@ -17,7 +17,6 @@
 # Author: Richard Elberger (elberger@amazon.com)
 
 import logging
-import botocore
 import boto3
 import json
 from enum import Enum

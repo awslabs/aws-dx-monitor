@@ -44,6 +44,7 @@ Resources:
                 - 'cloudwatch:PutMetricData'
                 - 'directconnect:DescribeConnections'
                 - 'directconnect:DescribeConnectionsOnInterconnect'
+                - 'directconnect:DescribeDirectConnectGateways'
                 - 'directconnect:DescribeInterconnects'
                 - 'directconnect:DescribeVirtualGateways'
                 - 'directconnect:DescribeVirtualInterfaces'

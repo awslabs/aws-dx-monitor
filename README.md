@@ -110,7 +110,7 @@ See the following sections for status levels on:
 
 ### Connections
 
-| Name | API Status Value | Numeric Value        |
+| Name        | API Status Value | Numeric Value |
 |:------------|:-----------------|:--------------|
 | Ordering    | ordering         | 1             |
 | Requested   | requested        | 2             |

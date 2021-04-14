@@ -192,6 +192,7 @@ class VirtualInterfaceState(Enum):
     deleting   = 6
     deleted    = 7
     rejected   = 8
+    testing    = 9
 
 class ConnectionState(Enum):
     ordering   = 1

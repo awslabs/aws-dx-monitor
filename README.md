@@ -156,6 +156,7 @@ See the following sections for status levels on:
 | Deleting    | deleting         | 6             |
 | Deleted     | deleted          | 7             |
 | Rejected    | rejected         | 8             |
+| Testing     | testing          | 9             |
 
 ### Virtual Gateways
 

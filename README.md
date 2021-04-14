@@ -12,7 +12,7 @@ architecture.
 ![aws-dx-monitor design](./images/aws-dx-monitor.png)
 
 1. CloudWatch Events schedules and invokes the Lambda function at
-   five minute intervals.
+   one minute intervals.
 2. The Lambda function interrogates the AWS Direct Connect service
    through Describe API calls for every configuration type that makes
    sense for its operational scope (for example, if you are a Service

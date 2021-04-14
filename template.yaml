@@ -20,9 +20,38 @@ Resources:
         Timer:
           Type: Schedule
           Properties:
-            Schedule: "rate(5 minutes)"
+            Schedule: "rate(1 minute)"
             Enabled: True
+      Role: !GetAtt MonitorFunctionRole.Arn
 
+  MonitorFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Action: ['sts:AssumeRole']
+          Effect: Allow
+          Principal:
+            Service: [lambda.amazonaws.com]
+        Version: '2012-10-17'
+      Path: /
+      Policies:
+        - PolicyName: DxMonitorFunctionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Action:
+                - 'cloudwatch:PutMetricData'
+                - 'directconnect:DescribeConnections'
+                - 'directconnect:DescribeConnectionsOnInterconnect'
+                - 'directconnect:DescribeInterconnects'
+                - 'directconnect:DescribeVirtualGateways'
+                - 'directconnect:DescribeVirtualInterfaces'
+                - 'logs:CreateLogGroup'
+                - 'logs:CreateLogStream'
+                - 'logs:PutLogEvents'
+                Effect: Allow
+                Resource: '*'
 Outputs:
   MonitorFunction:
     Description: "AWS DX Monitor Function ARN"
@@ -30,4 +59,3 @@ Outputs:
   MonitorFunctionIamRole:
     Description: "Implicit IAM Role created for the Monitor function"
     Value: !GetAtt MonitorFunctionRole.Arn
-

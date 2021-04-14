@@ -1,0 +1,33 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  aws-dx-monitor
+
+  The purpose of aws-dx-monitor is to monitor AWS Direct Connect runtime configuration items with Amazon CloudWatch. The system is driven by Amazon CloudWatch Events and AWS Lambda.
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  MonitorFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: monitor/
+      Handler: app.lambda_handler
+      Runtime: python3.8
+      Events:
+        Timer:
+          Type: Schedule
+          Properties:
+            Schedule: "rate(5 minutes)"
+            Enabled: True
+
+Outputs:
+  MonitorFunction:
+    Description: "AWS DX Monitor Function ARN"
+    Value: !GetAtt MonitorFunction.Arn
+  MonitorFunctionIamRole:
+    Description: "Implicit IAM Role created for the Monitor function"
+    Value: !GetAtt MonitorFunctionRole.Arn
+

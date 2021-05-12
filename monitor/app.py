@@ -83,7 +83,7 @@ def ver_dxgwstate( data ):
         logger.error("unexpected: directConnectGateways key not found in data")
         return
     for dxgw in data['directConnectGateways']:
-        put_vpgstate( dxgw['directConnectGatewayId'],
+        put_dxgwstate( dxgw['directConnectGatewayId'],
                       # Lookup int value in DXGW enum
                       DirectConnectGatewayState[dxgw['directConnectGatewayState']].value )
 
@@ -164,7 +164,7 @@ def put_vpgstate ( iid, state ):
     )
 
 # Writes DXGW dimension data to DX custom metric
-def put_vpgstate ( iid, state ):
+def put_dxgwstate ( iid, state ):
     response = cwclient.put_metric_data(
         Namespace='AWSx/DirectConnect',
         MetricData=[
